@@ -12,13 +12,19 @@ db = mongo.db.users
 
 @app.route('/users', methods=['POST'])
 def createUser():
+    '''Recibe un usuario nuevo, lo registra
+    en la base de datos y devuelve el id en
+    la base de datos del nuevo usuario
+
+    Returns:
+        str: id en la base de datos del nuevo usuario
+    '''
     user = request.json
     result = db.insert_one({
         'name': user['name'],
         'email': user['email'],
         'password': user['password'],
     })
-    # Se envía el id del usuario insertado
     return jsonify(str(result.inserted_id))
 
 
