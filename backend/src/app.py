@@ -1,5 +1,5 @@
-from flask import Flask, request
-from flask_pymongo import PyMongo
+from flask import Flask, jsonify, request
+from flask_pymongo import PyMongo, ObjectId
 from flask_cors import CORS
 
 
@@ -12,7 +12,14 @@ db = mongo.db.users
 
 @app.route('/users', methods=['POST'])
 def createUser():
-    return 'received'
+    user = request.json
+    result = db.insert_one({
+        'name': user['name'],
+        'email': user['email'],
+        'password': user['password'],
+    })
+    # Se envía el id del usuario insertado
+    return jsonify(str(result.inserted_id))
 
 
 @app.route('/users', methods=['GET'])
