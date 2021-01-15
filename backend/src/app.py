@@ -55,6 +55,23 @@ def getUser(id):
     )
 
 
+@app.route('/users/<id>', methods=['DELETE'])
+def deleteUser(id):
+    '''Eliminar un usuario en especifico registrado
+    en la base de datos según su id.
+
+    Args:
+        id (str): id del usuario
+
+    Returns:
+        bool: confirmación
+    '''
+    user = db.delete_one({'_id': ObjectId(id)})
+    return jsonify(
+        deleted=bool(user.deleted_count)
+    )
+
+
 @app.route('/users/<id>', methods=['PUT'])
 def updateUser():
     return 'received'
