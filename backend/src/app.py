@@ -44,14 +44,15 @@ def getUsers():
     } for user in db.find()])
 
 
-@app.route('/user/<id>', methods=['GET'])
-def getUser():
-    return 'received'
-
-
 @app.route('/users/<id>', methods=['GET'])
-def deleteUser():
-    return 'received'
+def getUser(id):
+    user = db.find_one({'_id': ObjectId(id)})
+    return jsonify(
+        _id=str(ObjectId(user['_id'])),
+        name=user['name'],
+        email=user['email'],
+        password=user['password']
+    )
 
 
 @app.route('/users/<id>', methods=['PUT'])
