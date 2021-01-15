@@ -46,6 +46,15 @@ def getUsers():
 
 @app.route('/users/<id>', methods=['GET'])
 def getUser(id):
+    '''Información de un usuario en especifico
+    de la base de datos según su id.
+
+    Args:
+        id (str): id del usuario
+
+    Returns:
+        set: información del usuario
+    '''
     user = db.find_one({'_id': ObjectId(id)})
     return jsonify(
         _id=str(ObjectId(user['_id'])),
