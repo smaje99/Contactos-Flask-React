@@ -14,7 +14,7 @@ db = mongo.db.users
 def createUser():
     '''Recibe un usuario nuevo, lo registra
     en la base de datos y devuelve el id en
-    la base de datos del nuevo usuario
+    la base de datos del nuevo usuario.
 
     Returns:
         str: id en la base de datos del nuevo usuario
@@ -30,7 +30,18 @@ def createUser():
 
 @app.route('/users', methods=['GET'])
 def getUsers():
-    return 'received'
+    '''Lista a todos los usuarios registrados
+    en la base de datos con su respectivos datos.
+
+    Returns:
+        list: todos los usuarios con su datos
+    '''
+    return jsonify([{
+        '_id': str(ObjectId(user['_id'])),
+        'name': user['name'],
+        'email': user['email'],
+        'password':  user['password']
+    } for user in db.find()])
 
 
 @app.route('/user/<id>', methods=['GET'])
