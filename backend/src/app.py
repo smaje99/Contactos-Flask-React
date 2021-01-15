@@ -82,8 +82,28 @@ def deleteUser(id):
 
 
 @app.route('/users/<id>', methods=['PUT'])
-def updateUser():
-    return 'received'
+def updateUser(id):
+    '''Actualiza los datos de un usario en
+    especifico de la base de datos.
+
+    Args:
+        id (str): id del usuario
+
+    Returns:
+        bool: confirmación
+    '''
+    user = request.json
+    update = db.update_one(
+        filter={'_id': ObjectId(id)},
+        update={'$set':{
+            'name': user['name'],
+            'email': user['email'],
+            'password': user['password']
+        }}
+    )
+    return jsonify(
+        updated=bool(update.modified_count)
+    )
 
 
 if __name__ == "__main__":
