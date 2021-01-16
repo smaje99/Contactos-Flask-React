@@ -1,13 +1,27 @@
 import React, { useState } from 'react'
 
+const API = process.env.REACT_APP_API
+
 export const Users = () => {
 
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        const respond = await fetch(`${API}/users`, {
+            method: 'POST',
+            header: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name,
+                email,
+                password
+            })
+        });
+        const data = await respond.json();
     }
 
     return (
