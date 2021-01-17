@@ -22,8 +22,10 @@ export const Users = () => {
                 password
             })
         });
-        const data = await respond.json();
-        console.log(data);
+        await getUsers();
+        setName('');
+        setEmail('');
+        setPassword('');
     }
 
     const getUsers = async () => {
