@@ -34,6 +34,10 @@ export const Users = () => {
 
     useEffect(() => { getUsers(); }, [])
 
+    const editUser = (id) => {}
+
+    const deleteUser = async (id) => {}
+
     return (
         <div className="row">
             <div className="col-md-4">
@@ -89,10 +93,16 @@ export const Users = () => {
                                 <td>{ user.email }</td>
                                 <td>{ user.password }</td>
                                 <td>
-                                    <button className="btn btn-secondary btn-sm btn-block">
+                                    <button
+                                        className="btn btn-secondary btn-sm btn-block"
+                                        onClick={ () => editUser(user._id) }
+                                    >
                                         Edit
                                     </button>
-                                    <button className="btn btn-danger btn-sm btn-block">
+                                    <button
+                                        className="btn btn-danger btn-sm btn-block"
+                                        onClick={ () => deleteUser(user._id) }
+                                    >
                                         Delete
                                     </button>
                                 </td>
