@@ -36,7 +36,18 @@ export const Users = () => {
 
     const editUser = (id) => {}
 
-    const deleteUser = async (id) => {}
+    const deleteUser = async (id) => {
+        if (window.confirm('Are you sure you want to delete it?')) {
+            const res = await fetch(`${API}/users/${id}`, {
+                method: 'DELETE'
+            });
+            const confirmation = await res.json();
+            if (confirmation.deleted) {
+                alert("User deleted");
+                await getUsers();
+            }
+        }
+    }
 
     return (
         <div className="row">
