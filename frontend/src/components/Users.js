@@ -7,21 +7,36 @@ export const Users = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [users, setUsers] = useState([])
+
+    const [edit, setEdit] = useState(false);
+    const [id, setId] = useState('');
+
+    const [users, setUsers] = useState([]);
+
+    const createUser = async () => {
+        await fetch(`${API}/users`, {
+            method: 'POST',
+            header: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, password })
+        });
+    }
+
+    const editUser = async () => {
+        await fetch(`${API}/users/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, password })
+        });
+
+        setEdit(false);
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const respond = await fetch(`${API}/users`, {
-            method: 'POST',
-            header: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                name,
-                email,
-                password
-            })
-        });
+
+        if (edit) await editUser();
+        else await createUser();
+
         await getUsers();
         setName('');
         setEmail('');
@@ -36,7 +51,17 @@ export const Users = () => {
 
     useEffect(() => { getUsers(); }, [])
 
-    const editUser = (id) => {}
+    const editingUser = async (id) => {
+        const res = await fetch(`${API}/users/${id}`)
+        const user = await res.json();
+
+        setEdit(true);
+        setId(user._id);
+
+        setName(user.name);
+        setEmail(user.email);
+        setPassword(user.password);
+    }
 
     const deleteUser = async (id) => {
         if (window.confirm('Are you sure you want to delete it?')) {
@@ -84,7 +109,7 @@ export const Users = () => {
                         />
                     </div>
                     <button className="btn btn-primary btn-block">
-                        Create
+                        { edit ? 'Update' : 'Create' }
                     </button>
                 </form>
             </div>
@@ -108,7 +133,7 @@ export const Users = () => {
                                 <td>
                                     <button
                                         className="btn btn-secondary btn-sm btn-block"
-                                        onClick={ () => editUser(user._id) }
+                                        onClick={ () => editingUser(user._id) }
                                     >
                                         Edit
                                     </button>
